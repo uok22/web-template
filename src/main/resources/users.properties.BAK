@@ -10,7 +10,7 @@ ftpserver.user.admin.uploadrate=0
 ftpserver.user.admin.downloadrate=0
 
 ftpserver.user.anonymous.userpassword=
-ftpserver.user.anonymous.homedirectory=/home/ok23/dev/ftp/web-template/src/main/resources/res/home
+ftpserver.user.anonymous.homedirectory=/home/ok23/ftp/anon
 ftpserver.user.anonymous.enableflag=true
 ftpserver.user.anonymous.writepermission=true
 ftpserver.user.anonymous.maxloginnumber=20

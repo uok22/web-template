@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  ftp-test-server:
+    image: ftp-test-server:0.55
+    container_name: ftp-server
+    ports:
+      - "2221:2221"
+      - "45445-45455:45445-45455"
+
+  ftp-test-server-2:
+    image: ftp-test-server:0.55
+    container_name: test-ftp
+    ports:
+      - "8080:8080"
+

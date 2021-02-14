@@ -1,7 +1,10 @@
 package com.example.webtemplate;
 
+import org.apache.ftpserver.DataConnectionConfiguration;
+import org.apache.ftpserver.DataConnectionConfigurationFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
+import org.apache.ftpserver.listener.Listener;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -26,28 +29,47 @@ public class WebTemplateApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		FtpServerFactory serverFactory = new FtpServerFactory();
-		ListenerFactory factory = new ListenerFactory();
+		ListenerFactory listenerFactory = new ListenerFactory();
 
 		// set the port of the listener
-		factory.setPort(2221);
+		listenerFactory.setPort(2221);
+
+		/**************************/
+
+		DataConnectionConfigurationFactory dccF = new DataConnectionConfigurationFactory();
+
+		dccF.setActiveEnabled(false);
+		// dccF.setActiveLocalPort(45446);
+		// dccF.setActiveLocalAddress("127.0.0.1");
+
+		dccF.setPassivePorts("45445-45455");
+
+		listenerFactory.setDataConnectionConfiguration(dccF.createDataConnectionConfiguration());
+
+		/**************************/
 
 		// replace the default listener
-		serverFactory.addListener("default", factory.createListener());
+		// Listener listener = listenerFactory.createListener();
+		serverFactory.addListener("default", listenerFactory.createListener());
+
+
+
+
+		// DataConnectionConfiguration dcc = listenerFactory.getDataConnectionConfiguration();
+
+
 
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
-		userManagerFactory.setFile(new File("myusers.properties"));
+		// userManagerFactory.setFile(new File("users.properties"));
+		userManagerFactory.setFile(new File("/ftp/users.properties"));
 		serverFactory.setUserManager(userManagerFactory.createUserManager());
 
 		// start the server
 		FtpServer server = serverFactory.createServer();
 		server.start();
-	}
 
-
-	@PostMapping("/sendfile")
-	public ResponseEntity sendFile(@RequestBody String file) {
-
-		return new ResponseEntity(HttpStatus.OK);
+		System.out.println();
 	}
 }
